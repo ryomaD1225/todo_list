@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<script src="js/jquery-2.1.3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<link rel="stylesheet" href="css/sample.css">
+<title>じゃんけん</title>
+</head>
+<body>
+
+  <div class="hero-image">
+      <figure class="hero-image-baki"><img src="" alt=""></figure>
+      <p class="hero-image__text">地上最強の親子喧嘩</p>
+  </div>
+
+<header>
+  <!--  <h1>じゃんけん</h1>  -->
+</header>
+
+
+<main>
+  <ul>
+    <li id="push">シュミレーションする</li>
+  </ul>
+
+  <table border="1" align="center">
+    <tr>
+      <th></th>
+      <th>ぐー</th>
+      <th>ちょき</th>
+      <th>ぱー</th>
+      <th>勇次郎</th>
+      <th>おっさん</th>
+    </tr>
+    <tr>
+      <td>10回</td>
+      <td id="rock10"></td>
+      <td id="scissors10"></td>
+      <td id="paper10"></td>
+      <td id="yu10"></td>
+      <td id="old10"></td>
+    </tr>
+    <tr>
+      <td>100回</td>
+      <td id="rock100"></td>
+      <td id="scissors100"></td>
+      <td id="paper100"></td>
+      <td id="yu100"></td>
+      <td id="old100"></td>
+    </tr>
+    <tr>
+      <td>1000回</td>
+      <td id="rock1000"></td>
+      <td id="scissors1000"></td>
+      <td id="paper1000"></td>
+      <td id="yu1000"></td>
+      <td id="old1000"></td>
+    </tr>
+    <tr>
+      <td>合計</td>
+      <td id="gu_total"></td>
+      <td id="scissors_total"></td>
+      <td id="paper_total"></td>
+      <td id="yu_total"></td>
+      <td id="old_total"></td>
+    </tr>
+  </table>
+
+  <table border="0" align="center">
+      <tr>
+      <th item-width="200" item-height="200"><div id="ahand"></div></th>
+      <th>VS</th>
+      <th item-width="200" item-height="200"><div id="bhand"></div></th>
+      </tr>
+      <tr>
+      <th>相手</th>
+      <td>&nbsp;</td>
+      <th>自分</th>
+      </tr>
+      <tr>
+      <th colspan="3">&nbsp;</th>
+      </tr>
+      <tr>
+      <th colspan="3"><form name="janken">
+          <table border="0" align="center">
+          <tr>
+          <td colspan="3"></td>
+          </tr>
+          <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          </tr>
+          </table>
+          </form>
+      </tr>
+      </table>
+
+
+  <ul>
+    <li id="gu_btn">グー</li>
+    <li id="cho_btn">チョキ</li>
+    <li id="par_btn">パー</li>
+    <li id="yu_btn">勇次郎</li>
+    <li id="oyaji_btn">おっさん</li>
+  </ul>
+
+  
+  <div>コンピュータの出した手は？「<span id="pc_hands">なに？</span>」</div>
+  <div id="judgment">勝ち</div>
+  <div id="echo"></div>
+
+  <table border="1" align="center">
+      <tr>
+        <th></th>
+        <th>ぐー</th>
+        <th>ちょき</th>
+        <th>ぱー</th>
+        <th>勇次郎</th>
+        <th>おっさん</th>
+      </tr>
+      <tr>
+        <td>WIN</td>
+        <td id="rock_win"></td>
+        <td id="scissors_win"></td>
+        <td id="paper_win"></td>
+        <td id="yu_win"></td>
+        <td id="oyaji_win"></td>
+      </tr>
+      <tr>
+        <td>DRAW</td>
+        <td id="rock_draw"></td>
+        <td id="scissors_draw"></td>
+        <td id="paper_draw"></td>
+        <td id="yu_draw"></td>
+        <td id="oyaji_draw"></td>
+      </tr>
+      <tr>
+        <td>LOSE</td>
+        <td id="rock_lose"></td>
+        <td id="scissors_lose"></td>
+        <td id="paper_lose"></td>
+        <td id="yu_lose"></td>
+        <td id="oyaji_lose"></td>
+      </tr>
+      <tr>
+        <td>勝率</td>
+          <td id="gu_percentage"></td>
+          <td id="scissors_percentage"></td>
+          <td id="paper_percentage"></td>
+          <td id="yu_percentage"></td>
+          <td id="oyaji_percentage"></td>
+        </tr>
+    </table>
+
+    
+
+</main>
+
+<footer></footer>
+<script>
+//じゃんけん用のSCRIPTを書いてください
+
+
+
+let first = 0;
+let second = 0;
+let third = 0;
+let yu = 0;
+let old = 0;
+let randNum = 0;
+
+let counter = {
+  "first" : 0,
+  "second":0,
+  "third" : 0,
+  "yu" : 0,
+  "old" : 0
+}
+
+$("#push").on("click",function(){
+for (var i = 0 ; i < 10 ; i++){
+  randNum = Math.floor(Math.random () * 5) + 1
+  console.log(randNum);
+
+  if (randNum == 1){
+    first++;
+    counter.first++;
+    $("#rock10").html(first + "回");
+  }else if (randNum == 2){
+    second++;
+    counter.second++;
+    $("#scissors10").html(second + "回");
+  }else if(randNum == 3){
+    counter.third++;
+    third++;
+    $("#paper10").html(third + "回");
+  }else if(randNum == 4){
+    counter.yu++;
+    yu++;
+    $("#yu10").html(yu + "回");
+  }else if(randNum == 5){
+    counter.old++;
+    old++;
+    $("#old10").html(old + "回");
+  }
+}
+
+console.log(counter);
+// "/n"は改行を意味している
+console.log("1がクリックされた回数:"  + first + "\n","2がクリックされた回数:" + second + "\n","3がクリックされた回数:" + third);
+});
+
+
+let first1 = 0;
+let second1 = 0;
+let third1 = 0;
+let yu1 = 0;
+let old1 = 0;
+let randNum1 = 0;
+
+let counter1 = {
+  "first1" : 0,
+  "second1":0,
+  "third1" : 0,
+  "yu1" : 0,
+  "old1" : 0
+}
+
+$("#push").on("click",function(){
+for (var i = 0 ; i < 100 ; i++){
+  randNum1 = Math.floor(Math.random () * 5) + 1
+  console.log(randNum1);
+  if (randNum1 == 1){
+    first1++;
+    counter.first1++;
+    $("#rock100").html(first1 + "回");
+  }else if (randNum1 == 2){
+    second1++;
+    counter.second1++;
+    $("#scissors100").html(second1 + "回");
+  }else if(randNum1 == 3){
+    counter.third1++;
+    third1++;
+    $("#paper100").html(third1 + "回");
+  }else if(randNum1 == 4){
+    counter.yu1++;
+    yu1++;
+    $("#yu100").html(yu1 + "回");
+  }else if(randNum1 == 5){
+    counter.old1++;
+    old1++;
+    $("#old100").html(old1 + "回");
+  }
+}
+
+console.log(counter1);
+// "/n"は改行を意味している
+console.log("1がクリックされた回数:"  + first1 + "\n","2がクリックされた回数:" + second1 + "\n","3がクリックされた回数:" + third1);
+});
+
+
+let first2 = 0;
+let second2 = 0;
+let third2 = 0;
+let yu2 = 0;
+let old2 = 0;
+let randNum2 = 0;
+
+let counter2 = {
+  "first2" : 0,
+  "second2":0,
+  "third2" : 0,
+  "yu2" : 0,
+  "old2" : 0
+}
+
+$("#push").on("click",function(){
+for (var i = 0 ; i < 1000 ; i++){
+  randNum2 = Math.floor(Math.random () * 5) + 1
+  console.log(randNum2);
+  if (randNum2 == 1){
+    first2++;
+    counter.first2++;
+    $("#rock1000").html(first2 + "回");
+  }else if (randNum2 == 2){
+    second2++;
+    counter.second2++;
+    $("#scissors1000").html(second2 + "回");
+  }else if(randNum2 == 3){
+    counter.third2++;
+    third2++;
+    $("#paper1000").html(third2 + "回");
+  }else if(randNum2 == 4){
+    counter.yu2++;
+    yu2++;
+    $("#yu1000").html(yu2 + "回");
+  }else if(randNum2 == 5){
+    counter.old2++;
+    old2++;
+    $("#old1000").html(old2 + "回");
+  }
+}
+
+console.log(counter2);
+// "/n"は改行を意味している
+console.log("1がクリックされた回数:"  + first2 + "\n","2がクリックされた回数:" + second2 + "\n","3がクリックされた回数:" + third2);
+});
+
+//合計を出力
+$("#push").on("click",function(){
+    $("#gu_total").html(first + first1 + first2 +"回");
+    $("#scissors_total").html(second + second1 + second2 +"回");
+    $("#paper_total").html(third + third1 + third2 +"回");
+    $("#yu_total").html(yu + yu1 + yu2 +"回");
+    $("#old_total").html(old + old1 + old2 +"回");
+});
+
+
+// hand = new Array("グー","チョキ","パー");
+//配列変数handを使って3つの手を用意する。後で画像に置き換える
+ 
+// function getbhand(btn) {
+// 	//手を出す
+// 	r = Math.floor(Math.random() * 3);
+// 	document.getElementById("ahand").innerHTML = hand[r];
+// 	document.getElementById("bhand").innerHTML = hand[btn];
+// }
+
+//配列変数handを使って3つの手を用意する。後で画像に置き換える
+hand = new Array("グー","チョキ","パー");
+
+//勝ち負け合計を計算
+let gu_win = 0;
+let gu_even = 0;
+let gu_lose = 0;
+let gu_total = 0;
+
+let gu_counter = {
+  "gu_win" : 0,
+  "gu_even":0,
+  "gu_lose" : 0,
+  "gu_total" : 0
+}   
+
+//グーを押した時の挙動
+$("#gu_btn").on("click",function(){
+  
+  const a = Math.ceil(Math.random()*5);
+
+    if(a == 1){
+        gu_even++;
+        gu_counter.gu_even++;
+        $("#rock_draw").html(gu_even + "回");
+        $("#pc_hands").html("ぐー");
+        $("#ahand").html("ぐー");
+        $("#bhand").html("ぐー");
+        $("#judgment").html("あいこ");
+    }
+    if(a == 2){
+        gu_win++;
+        gu_counter.gu_win++;
+        gu_total++;
+        //counter3.total++;
+        $("#rock_win").html(gu_win + "回");
+        $("#pc_hands").html("ちょき");
+        $("#ahand").html("ちょき");
+        $("#bhand").html("ぐー");
+        $("#judgment").html("かち");
+        $("#gu_percentage").html(gu_win / gu_total * 100 + "%");
+    }
+    if(a == 3){
+        gu_lose++;
+        gu_counter.gu_lose++;
+        gu_total++;
+        $("#rock_lose").html(gu_lose + "回");
+        $("#pc_hands").html("ぱー");
+        $("#ahand").html("ぱー");
+        $("#bhand").html("ぐー");
+        $("#judgment").html("負け");
+        $("#gu_percentage").html(gu_win / gu_total * 100 + "%");
+    }
+    if(a == 4){
+        gu_lose++;
+        gu_counter.gu_lose++;
+        gu_total++;
+        $("#rock_lose").html(gu_lose + "回");
+        $("#pc_hands").html("勇次郎");
+        $("#ahand").html('<img src="yu_scissors.jpg">');
+        $("#bhand").html("ぐー");
+        $("#judgment").html("負け");
+        $("#gu_percentage").html(gu_win / gu_total * 100 + "%");
+    }
+    if(a == 5){
+        gu_win++;
+        gu_counter.gu_win++;
+        gu_total++;
+        $("#rock_win").html(gu_win + "回");
+        $("#pc_hands").html('<img src="oyaji.jpg">');
+        $("#ahand").html('<img src="oyaji.jpg">');
+        $("#bhand").html("ぐー");
+        $("#judgment").html("勝ち");
+        $("#gu_percentage").html(gu_win / gu_total * 100 + "%");
+    }
+    
+});
+
+
+//勝ち負け合計を計算
+let cho_win = 0;
+let cho_even = 0;
+let cho_lose = 0;
+let cho_total = 0;
+
+let cho_counter = {
+  "cho_win" : 0,
+  "cho_even":0,
+  "cho_lose" : 0,
+  "cho_total" : 0
+}
+
+//チョキを押した時の挙動
+$("#cho_btn").on("click",function(){
+
+  const a = Math.ceil(Math.random()*5);
+
+    if(a == 1){
+        cho_lose++;
+        cho_counter.cho_lose++;
+        cho_total++;
+        $("#scissors_lose").html(cho_lose + "回");
+        $("#pc_hands").html("ぐー");
+        $("#ahand").html("ぐー");
+        $("#bhand").html("ちょき");
+        $("#judgment").html("負け");
+        $("#scissors_percentage").html(cho_win / cho_total * 100 + "%");
+    }
+    if(a == 2){
+        cho_even++;
+        cho_counter.cho_even++;
+        $("#scissors_draw").html(cho_even + "回");
+        $("#pc_hands").html("ちょき");
+        $("#ahand").html("ちょき");
+        $("#bhand").html("ちょき");
+        $("#judgment").html("あいこ");
+    }
+    if(a == 3){
+        cho_win++;
+        cho_counter.cho_win++;
+        cho_total++;
+        $("#scissors_win").html(cho_win + "回");
+        $("#pc_hands").html("ぱー");
+        $("#ahand").html("ぱー");
+        $("#bhand").html("ちょき");
+        $("#judgment").html("かち");
+        $("#scissors_percentage").html(cho_win / cho_total * 100 + "%");
+    }
+    if(a == 4){
+        cho_lose++;
+        cho_counter.cho_lose++;
+        cho_total++;
+        $("#scissors_lose").html(cho_lose + "回");
+        $("#pc_hands").html("勇次郎");
+        $("#ahand").html("勇次郎");
+        $("#bhand").html("ちょき");
+        $("#judgment").html("負け");
+        $("#scissors_percentage").html(cho_win / cho_total * 100 + "%");
+    }
+    if(a == 5){
+        cho_win++;
+        cho_counter.cho_win++;
+        cho_total++;
+        $("#scissors_win").html(cho_win + "回");
+        $("#pc_hands").html('<img src="oyaji.jpg">');
+        $("#ahand").html('<img src="oyaji.jpg">');
+        $("#bhand").html("ちょき");
+        $("#judgment").html("かち");
+        $("#scissors_percentage").html(cho_win / cho_total * 100 + "%");
+    }
+});
+
+
+//勝ち負け合計を計算
+let par_win = 0;
+let par_even = 0;
+let par_lose = 0;
+let par_total = 0;
+
+let par_counter = {
+  "par_win" : 0,
+  "par_even":0,
+  "par_lose" : 0,
+  "par_total" : 0
+}
+//パーを押した時の挙動
+$("#par_btn").on("click",function(){
+
+  const a = Math.ceil(Math.random()*5);
+
+    if(a == 1){
+        par_win++;
+        par_counter.par_win++;
+        par_total++;
+        $("#paper_win").html(par_win + "回");
+        $("#pc_hands").html("ぐー");
+        $("#ahand").html("ぐー");
+        $("#bhand").html("ぱー");
+        $("#judgment").html("かち");
+        $("#paper_percentage").html(par_win / par_total * 100 + "%");
+    }
+    if(a == 2){
+        par_lose++;
+        par_counter.par_lose++;
+        par_total++;
+        $("#paper_lose").html(par_lose + "回");
+        $("#pc_hands").html("ちょき");
+        $("#ahand").html("ちょき");
+        $("#bhand").html("ぱー");
+        $("#judgment").html("負け");
+        $("#paper_percentage").html(par_win / par_total * 100 + "%");
+    }
+    if(a == 3){
+        par_even++;
+        par_counter.par_even++;
+        $("#paper_draw").html(par_even + "回");
+        $("#pc_hands").html("ぱー");
+        $("#ahand").html("ぱー");
+        $("#bhand").html("ぱー");
+        $("#judgment").html("あいこ");
+    }
+    if(a == 4){
+        par_lose++;
+        par_counter.par_lose++;
+        par_total++;
+        $("#paper_lose").html(par_lose + "回");
+        $("#pc_hands").html("勇次郎");
+        $("#ahand").html("勇次郎");
+        $("#bhand").html("ぱー");
+        $("#judgment").html("負け");
+        $("#paper_percentage").html(par_win / par_total * 100 + "%");
+    }
+    if(a == 5){
+        par_win++;
+        par_counter.par_win++;
+        par_total++;
+        $("#paper_win").html(par_win + "回");
+        $("#pc_hands").html('<img src="oyaji.jpg">');
+        $("#ahand").html('<img src="oyaji.jpg">');
+        $("#bhand").html("ぱー");
+        $("#judgment").html("かち");
+        $("#paper_percentage").html(par_win / par_total * 100 + "%");
+    }
+});
+
+
+let yu_win = 0;
+let yu_lose = 0;
+let yu_even = 0;
+let yu_total = 0;
+
+let yu_counter = {
+  "yu_win" : 0,
+  "yu_lose" : 0,
+  "yu_even":0,
+  "yu_total" : 0
+}
+//パーを押した時の挙動
+$("#yu_btn").on("click",function(){
+
+  const a = Math.ceil(Math.random()*5);
+
+    if(a == 1){
+        yu_win++;
+        yu_counter.yu_win++;
+        yu_total++;
+        $("#yu_win").html(yu_win + "回");
+        $("#pc_hands").html("ぐー");
+        $("#ahand").html("ぐー");
+        $("#bhand").html('<img src="yu_scissors.jpg">');
+        $("#judgment").html("かち");
+        $("#yu_percentage").html(yu_win / yu_total * 100 + "%");
+    }
+    if(a == 2){
+        yu_win++;
+        yu_counter.yu_win++;
+        yu_total++;
+        $("#yu_win").html(yu_win + "回");
+        $("#pc_hands").html("ちょき");
+        $("#ahand").html("ちょき");
+        $("#bhand").html("勇次郎");
+        $("#judgment").html("かち");
+        $("#yu_percentage").html(yu_win / yu_total * 100 + "%");
+    }
+    if(a == 3){
+        yu_win++;
+        yu_counter.yu_win++;
+        yu_total++;
+        $("#yu_win").html(yu_win + "回");
+        $("#pc_hands").html("ぱー");
+        $("#ahand").html("ぱー");
+        $("#bhand").html("勇次郎");
+        $("#judgment").html("かち");
+        $("#yu_percentage").html(yu_win / yu_total * 100 + "%");
+    }
+    if(a == 4){
+        yu_even++;
+        yu_counter.yu_even++;
+        $("#yu_draw").html(yu_even + "回");
+        $("#pc_hands").html("勇次郎");
+        $("#ahand").html("勇次郎");
+        $("#bhand").html("勇次郎");
+        $("#judgment").html("あいこ");
+    }
+    if(a == 5){
+        yu_lose++;
+        yu_counter.yu_lose++;
+        yu_total++;
+        $("#yu_lose").html(yu_lose + "回");
+        $("#pc_hands").html('<img src="oyaji.jpg">');
+        $("#ahand").html('<img src="oyaji.jpg">');
+        $("#bhand").html('<img src="hidan.jpg">');
+        $("#judgment").html("負け");
+        $("#yu_percentage").html(yu_win / yu_total * 100 + "%");
+    }
+});
+
+let old_win = 0;
+let old_lose = 0;
+let old_even = 0;
+let old_total = 0;
+
+let old_counter = {
+  "old_win" : 0,
+  "old_lose" : 0,
+  "old_even":0,
+  "old_total" : 0
+}
+
+//パーを押した時の挙動
+$("#oyaji_btn").on("click",function(){
+
+  const a = Math.ceil(Math.random()*5);
+
+    if(a == 1){
+        old_lose++;
+        old_counter.old_lose++;
+        old_total++;
+        $("#oyaji_lose").html(old_lose + "回");
+        $("#pc_hands").html("ぐー");
+        $("#ahand").html("ぐー");
+        $("#bhand").html('<img src="oyaji.jpg">');
+        $("#judgment").html("負け");
+        $("#oyaji_percentage").html(old_win / old_total * 100 + "%");
+    }
+    if(a == 2){
+        old_lose++;
+        old_counter.old_lose++;
+        old_total++;
+        $("#oyaji_lose").html(old_lose + "回");
+        $("#pc_hands").html("ちょき");
+        $("#ahand").html("ちょき");
+        $("#bhand").html('<img src="oyaji.jpg">');
+        $("#judgment").html("負け");
+        $("#oyaji_percentage").html(old_win / old_total * 100 + "%");
+    }
+    if(a == 3){
+        old_lose++;
+        old_counter.old_lose++;
+        old_total++;
+        $("#oyaji_lose").html(old_lose + "回");
+        $("#pc_hands").html("ぱー");
+        $("#ahand").html("ぱー");
+        $("#bhand").html('<img src="oyaji.jpg">');
+        $("#judgment").html("負け");
+        $("#oyaji_percentage").html(old_win / old_total * 100 + "%");
+    }
+    if(a == 4){
+        old_win++;
+        old_counter.old_win++;
+        old_total++;
+        $("#oyaji_win").html(old_win + "回");
+        $("#pc_hands").html("勇次郎");
+        $("#ahand").html('<img src="hidan.jpg">');
+        $("#bhand").html('<img src="oyaji.jpg">');
+        $("#judgment").html("かち");
+        $("#oyaji_percentage").html(old_win / old_total * 100 + "%");
+    }
+    if(a == 5){
+        old_even++;
+        old_counter.old_even++;
+        old_total++;
+        $("#oyaji_draw").html(old_even + "回");
+        $("#pc_hands").html("おっさん");
+        $("#ahand").html('<img src="oyaji.jpg">');
+        $("#bhand").html('<img src="oyaji.jpg">');
+        $("#judgment").html("あいこ");
+    }
+});
+
+
+
+
+
+
+</script>
+
+
+</body>
+</html>
